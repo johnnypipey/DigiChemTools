@@ -1,4 +1,5 @@
 import json
+import os  # Import the os module for directory handling
 
 def getReagentName():
     """Prompt the user to enter the reagent name."""
@@ -44,38 +45,43 @@ def getConcentration():
     return None  # Return None if no concentration is provided.
 
 def createReagent():
-     print("\n--- Creating a New XDL Reagent ---\n")
-     # Collect basic reagent details.
-     name = getReagentName()
-     amount = getAmount()
-     units = getUnits()
-     concentration = getConcentration()
+    print("\n--- Creating a New XDL Reagent ---\n")
+    # Collect basic reagent details.
+    name = getReagentName()
+    amount = getAmount()
+    units = getUnits()
+    concentration = getConcentration()
 
-     # Create a dictionary representing the reagent in XDL format.
-     reagent = {
+    # Create a dictionary representing the reagent in XDL format.
+    reagent = {
         "name": name,
         "amount": amount,
         "units": units,
         "concentration": concentration
     }
-     # Display the generated XDL-compatible reagent structure.
-     print("\nGenerated Reagent:")
-     print(json.dumps(reagent, indent=4))
-     # Optionally save the reagent details to a JSON file.
-     save = input("Save this reagent to a file? (y/n): ").strip().lower()
-     if save == 'y':
-        filename = f"{name.replace(' ', '_')}_reagent.json"  # Create a filename based on the reagent's name.
-        with open(filename, 'w') as file:
-            json.dump(reagent, file, indent=4)  # Write the reagent dictionary to a JSON file.
-        print(f"Reagent saved as {filename}!")  # Confirm that the file was saved.
-    
 
+    # Display the generated XDL-compatible reagent structure.
+    print("\nGenerated Reagent:")
+    print(json.dumps(reagent, indent=4))
+
+    # Optionally save the reagent details to a JSON file.
+    save = input("Save this reagent to a file? (y/n): ").strip().lower()
+    if save == 'y':
+        # Ensure the 'Reagents' directory exists.
+        if not os.path.exists("Reagents"):
+            os.makedirs("Reagents")  # Create the folder if it doesn't exist.
+        
+        # Define the file path within the 'Reagents' folder.
+        filename = f"Reagents/{name.replace(' ', '_')}.json"
+        
+        # Write the reagent dictionary to the JSON file.
+        with open(filename, 'w') as file:
+            json.dump(reagent, file, indent=4)
+        print(f"Reagent saved as {filename}!")  # Confirm that the file was saved.
 
 # The main block to run the program.
 if __name__ == "__main__":
     print("\033[1mChemical Creator Tool\033[0m V0.1\n")
     print("This tool will assist in creating Chemicals for the system")
-
-    
 
     createReagent()  # Call the function to create a reagent.
