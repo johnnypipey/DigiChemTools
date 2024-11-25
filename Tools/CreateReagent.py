@@ -1,5 +1,6 @@
 import json
 import os  # Import the os module for directory handling
+import random  # Import the random module to generate IDs
 
 def getReagentName():
     """Prompt the user to enter the reagent name."""
@@ -44,6 +45,33 @@ def getConcentration():
             print("Concentration units cannot be empty. Please try again.")
     return None  # Return None if no concentration is provided.
 
+def getState():
+    """Prompt the user to enter the state of the reagent (liquid, solid, gas)."""
+    valid_states = ["liquid", "solid", "gas"]
+    while True:
+        state = input("Enter the state of the reagent (liquid, solid, gas): ").strip().lower()
+        if state in valid_states:
+            return state.capitalize()  # Return the state with the first letter capitalized
+        print(f"Invalid state! Please enter one of the following: {', '.join(valid_states)}")
+
+def getChemicalFormula():
+    """Prompt the user to enter the chemical formula (optional)."""
+    formula = input("Enter the chemical formula (optional, press Enter to skip): ").strip()
+    return formula if formula else None  # Return the input or None if empty
+
+def getRole():
+    """Prompt the user to enter the role of the reagent."""
+    valid_roles = ["solvent", "catalyst", "reactant", "product", "reagent"]
+    while True:
+        role = input(f"Enter the role of the reagent ({', '.join(valid_roles)}): ").strip().lower()
+        if role in valid_roles:
+            return role.capitalize()  # Return the role with the first letter capitalized
+        print(f"Invalid role! Please choose from: {', '.join(valid_roles)}")
+
+def generateRandomID():
+    """Generate a random 4-digit ID."""
+    return random.randint(1000, 9999)
+
 def createReagent():
     print("\n--- Creating a New XDL Reagent ---\n")
     # Collect basic reagent details.
@@ -51,14 +79,25 @@ def createReagent():
     amount = getAmount()
     units = getUnits()
     concentration = getConcentration()
+    state = getState()  # Collect state information
+    chemical_formula = getChemicalFormula()  # Collect optional chemical formula
+    role = getRole()  # Collect the reagent's role
+    reagent_id = generateRandomID()  # Generate a random 4-digit ID
 
     # Create a dictionary representing the reagent in XDL format.
     reagent = {
+        "id": reagent_id,  # Add the generated ID
         "name": name,
         "amount": amount,
         "units": units,
-        "concentration": concentration
+        "concentration": concentration,
+        "state": state,
+        "role": role
     }
+
+    # Add the chemical formula to the dictionary if provided.
+    if chemical_formula:
+        reagent["chemical_formula"] = chemical_formula
 
     # Display the generated XDL-compatible reagent structure.
     print("\nGenerated Reagent:")
