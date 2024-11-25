@@ -75,7 +75,7 @@ def getSmiles():
 
 def generateRandomID():
     """Generate a random 4-digit ID."""
-    return random.randint(1000, 9999)
+    return random.randint(100000, 999999)
 
 def createReagent():
     print("\n--- Creating a New XDL Reagent ---\n")
