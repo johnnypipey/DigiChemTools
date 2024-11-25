@@ -68,6 +68,11 @@ def getRole():
             return role.capitalize()  # Return the role with the first letter capitalized
         print(f"Invalid role! Please choose from: {', '.join(valid_roles)}")
 
+def getSmiles():
+    """Prompt the user to enter the SMILES string (optional)."""
+    smiles = input("Enter the SMILES string (optional, press Enter to skip): ").strip()
+    return smiles if smiles else None  # Return the input or None if empty
+
 def generateRandomID():
     """Generate a random 4-digit ID."""
     return random.randint(1000, 9999)
@@ -83,10 +88,11 @@ def createReagent():
     chemical_formula = getChemicalFormula()  # Collect optional chemical formula
     role = getRole()  # Collect the reagent's role
     reagent_id = generateRandomID()  # Generate a random 4-digit ID
+    smiles = getSmiles()  # Collect the optional SMILES string
 
     # Create a dictionary representing the reagent in XDL format.
     reagent = {
-        "id": reagent_id,  # Add the generated ID
+        "id": reagent_id,
         "name": name,
         "amount": amount,
         "units": units,
@@ -98,6 +104,10 @@ def createReagent():
     # Add the chemical formula to the dictionary if provided.
     if chemical_formula:
         reagent["chemical_formula"] = chemical_formula
+    
+    # Add the SMILES string to the dictionary if provided.
+    if smiles:
+        reagent["smiles"] = smiles
 
     # Display the generated XDL-compatible reagent structure.
     print("\nGenerated Reagent:")
@@ -120,7 +130,7 @@ def createReagent():
 
 # The main block to run the program.
 if __name__ == "__main__":
-    print("\033[1mChemical Creator Tool\033[0m V0.1\n")
+    print("\033[1mChemical Creator Tool\033[0m V0.3\n")
     print("This tool will assist in creating Chemicals for the system")
 
     createReagent()  # Call the function to create a reagent.
