@@ -1,0 +1,10 @@
+{
+    "id": 5072,
+    "name": "acetone",
+    "amount": 40.0,
+    "units": "mL",
+    "concentration": null,
+    "state": "Liquid",
+    "role": "Solvent",
+    "chemical_formula": "C3H60"
+}
